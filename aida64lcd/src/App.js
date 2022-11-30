@@ -1,8 +1,10 @@
 import logo from "./logo.svg";
 import "./App.css";
 import { useEffect, useState } from "react";
-import EchartContainer from "./components/EchartContainer";
+import EchartContainer from "./components/EchartsContainer";
 import LineChart from "./components/LineChart";
+import Grid from '@mui/material/Grid';
+
 
 function App() {
   const getData = async () => {
@@ -21,15 +23,18 @@ function App() {
     }
   };
 
+  const [value, setValue] = useState(0)
   useEffect(() => {
-    getData();
+    setInterval(() => {
+      setValue(Math.random() * 5 + 10)
+    }, 500)
 
-    return () => {};
+    return () => { };
   }, []);
 
   return (
-    <div style={{width : "100vw" , height:"100vh"}}>
-      <LineChart/>
+    <div >
+      <LineChart maxLen={100} value={value} />
     </div>
   );
 }

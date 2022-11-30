@@ -1,42 +1,82 @@
 import React, { useEffect, useRef, useState } from "react";
-import EchartContainer from "./EchartContainer";
+import EchartsContainer from "./EchartsContainer";
+import * as echarts from "echarts";
 
-export default function LineChart() {
-  const x = useRef([1, 2, 3, 4]);
-  const y = useRef([1, 2, 3, 4]);
+
+
+export default function LineChart({ maxLen, value }) {
+
+  const dataList = useRef(Array(maxLen).fill(0))
+  const xAxis = useRef(Array(maxLen).fill(0).map((_, i) => i))
+  const dataLength = useRef(maxLen)
+
 
   const [option, setOption] = useState({
+    animationDuration: 0,
+    tooltip: {
+      show: false
+    },
     xAxis: {
-      type: "category",
-      data: x.current,
+      type: 'category',
+      data: xAxis.current,
+      show: false,
+      splitLine: {
+        show: false
+      }
     },
     yAxis: {
-      type: "value",
+      type: 'value',
+      boundaryGap: [0, '100%'],
+      splitLine: {
+        show: false
+      },
+      min: 0,
+      max: 100
     },
     series: [
       {
-        data: y.current,
-        type: "line",
-      },
-    ],
+        type: 'line',
+        showSymbol: false,
+        data: dataList.current,
+        itemStyle: {
+          color: '#ad1457'
+        },
+        min: 0,
+        max: 100,
+        areaStyle: {
+          color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [
+            {
+              offset: 0,
+              color: 'rgb(255, 158, 68)'
+            },
+            {
+              offset: 1,
+              color: 'rgb(255, 70, 131)'
+            }
+          ])
+        },
+      }
+    ]
   });
 
   useEffect(() => {
-    setInterval(() => {
-      x.current.push(9);
-      y.current.push(9);
-      setOption({
-        xAxis: {
-          data: x.current,
-        },
-        series: [
-          {
-            data: y.current,
-          },
-        ],
-      });
-    }, 300);
-  }, []);
+    dataLength.current = dataLength.current + 1
+    dataList.current.shift()
+    dataList.current.push(value)
+    xAxis.current.shift()
+    xAxis.current.push(dataLength.current)
+    // console.log(dataList.current,xAxis.current)
+    setOption({
+      xAxis: {
+        data: xAxis.current
+      },
+      series: [
+        {
+          data: dataList.current,
+        }
+      ]
+    })
+  }, [value]);
 
-  return <EchartContainer option={option}></EchartContainer>;
+  return <EchartsContainer option={option}></EchartsContainer>;
 }
