@@ -1,39 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
-import React, { useEffect, useMemo, useState } from 'react';
+import logo from "./logo.svg";
+import "./App.css";
+import { useEffect, useState } from "react";
+import EchartContainer from "./components/EchartContainer";
+import LineChart from "./components/LineChart";
 
 function App() {
-  useEffect( 
-    async () => {
-      const resp = await fetch("http://127.0.0.1:9017/api/data" , {
-        headers:{
-          'content-type':'application/json'
-      },
-      method:'GET',
-      })
-      const data = await resp.json()
-      console.log(data)
-
+  const getData = async () => {
+    try {
+      const resp = await fetch("http://127.0.0.1:9017/api/data", {
+        headers: {
+          "content-type": "application/json",
+        },
+        method: "GET",
+      });
+      const data = await resp.json();
+      return [null, data];
+    } catch (e) {
+      console.log(e);
+      return [e, null];
     }
-  ,[])
-  
-  
+  };
+
+  useEffect(() => {
+    getData();
+
+    return () => {};
+  }, []);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{width : "100vw" , height:"100vh"}}>
+      <LineChart/>
     </div>
   );
 }
