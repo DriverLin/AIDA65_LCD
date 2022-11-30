@@ -51,6 +51,8 @@ export default function EchartContainer({ option }) {
   useEffect(() => {
     chart.current = echarts.init(container.current, "default");
     chart.current.setOption(option ? option : loadingOption);
+    window.addEventListener("resize",chart.current.resize)
+
   }, []);
 
   useEffect(() => {

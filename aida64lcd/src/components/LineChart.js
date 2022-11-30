@@ -4,7 +4,7 @@ import * as echarts from "echarts";
 
 
 
-export default function LineChart({ maxLen, value }) {
+export default function LineChart({ title, maxLen, value }) {
 
   const dataList = useRef(Array(maxLen).fill(0))
   const xAxis = useRef(Array(maxLen).fill(0).map((_, i) => i))
@@ -12,6 +12,17 @@ export default function LineChart({ maxLen, value }) {
 
 
   const [option, setOption] = useState({
+    title: {
+      text: title,
+      right: 0,
+      top:12
+    },
+    grid: {
+      x: 32,
+      y: 10,
+      x2: 0,
+      y2: 10
+    },
     animationDuration: 0,
     tooltip: {
       show: false
@@ -28,7 +39,7 @@ export default function LineChart({ maxLen, value }) {
       type: 'value',
       boundaryGap: [0, '100%'],
       splitLine: {
-        show: false
+        show: true
       },
       min: 0,
       max: 100
