@@ -4,7 +4,7 @@ import * as echarts from "echarts";
 
 
 
-export default function LineChart({ title, maxLen, value }) {
+export default function LineChart({ title, maxLen, value ,clk}) {
 
   const dataList = useRef(Array(maxLen).fill(0))
   const xAxis = useRef(Array(maxLen).fill(0).map((_, i) => i))
@@ -71,6 +71,7 @@ export default function LineChart({ title, maxLen, value }) {
   });
 
   useEffect(() => {
+    console.log(value , clk)
     dataLength.current = dataLength.current + 1
     dataList.current.shift()
     dataList.current.push(value)
@@ -87,7 +88,7 @@ export default function LineChart({ title, maxLen, value }) {
         }
       ]
     })
-  }, [value]);
+  }, [value , clk]);
 
-  return <EchartsContainer option={option}></EchartsContainer>;
+  return <EchartsContainer option={option}/>;
 }

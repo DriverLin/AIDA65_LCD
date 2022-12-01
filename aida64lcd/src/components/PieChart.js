@@ -8,7 +8,7 @@ const defaultColors = [
     { value: 100, color: "#D32F2F" }
 ]
 
-export default function PieChart({ title, colors, value, lineWidth }) {
+export default function PieChart({ title, colors, value, lineWidth ,clk}) {
 
     const [option, setOption] = useState(
         {
@@ -115,14 +115,14 @@ export default function PieChart({ title, colors, value, lineWidth }) {
                         ],
                         detail: {
                             color: itemColor,
-                            borderColor: itemColor,
+                            borderColor: "rgba(0,0,0,0)",
                         }
                     }
                 ]
             }
         )
 
-    }, [colors, value])
+    }, [colors, value , clk])
 
     return <EchartContainer option={option} />
 }
